@@ -4,7 +4,7 @@
 This project predicts **Life Expectancy** of countries using socioeconomic and health indicators from the WHO.
 Poor healthcare investment, high disease burden, and low income are key drivers of reduced life expectancy globally.
 By modeling these relationships, we aim to help policymakers identify which factors most impact population health outcomes.
-Dataset source: [WHO Life Expectancy — Kaggle](https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who) — 193 countries, 2938 rows, 22 columns (2000–2015).
+Dataset source: [WHO Life Expectancy from Kaggle](https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who) data from 193 countries, in 2938 rows, 22 columns (2000–2015).
 
 ---
 
