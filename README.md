@@ -13,8 +13,11 @@ Dataset source: [WHO Life Expectancy-Kaggle](https://www.kaggle.com/datasets/kum
 ```
 linear_regression_model/
 ├── summative/
+│   ├── API/
+│   │   ├── prediction.py             # FastAPI app (predict & retrain endpoints)
+│   │   └── requirements.txt          # API dependencies
 │   └── linear_regression/
-│       ├── multivariate.ipynb        # notebook  
+│       ├── multivariate.ipynb        # notebook
 │       ├── Life Expectancy Data.csv  # the raw dataset
 │       └── saved_models/
 │           ├── best_model.pkl        # the saved best performing model
@@ -36,8 +39,47 @@ linear_regression_model/
 
 ---
 
+## API
+
+### Public URL
+
+**Deployed API:** https://linear-regression-model-d6zo.onrender.com
+
+**Swagger UI Documentation:** https://linear-regression-model-d6zo.onrender.com/docs
+
+### Endpoints
+
+| Method | Path        | Description                                      |
+|--------|-------------|--------------------------------------------------|
+| GET    | `/`         | Health check                                     |
+| GET    | `/features` | List the 18 features the model expects           |
+| POST   | `/predict`  | Predict life expectancy from 18 input features   |
+| POST   | `/retrain`  | Retrain the model by uploading a new CSV dataset |
+
+### Input Features (Pydantic-validated)
+
+All 18 features have explicit data types (`float` or `int`) and value constraints (`ge`/`le`) enforced via Pydantic:
+
+`Adult_Mortality`, `Alcohol`, `Pct_Expenditure`, `Hepatitis_B`, `Measles`, `BMI`, `Under5_Deaths`, `Polio`, `Total_Exp`, `Diphtheria`, `HIV_AIDS`, `GDP`, `Population`, `Thinness_1_19`, `Thinness_5_9`, `Income_Composition`, `Schooling`, `Status_Developing`
+
+### CORS Configuration
+
+CORS middleware is configured with explicit (non-wildcard) values:
+
+- **Allowed Origins:** `localhost`, `localhost:8080`, `10.0.2.2`, deployed Render URL
+- **Allowed Methods:** `GET`, `POST`
+- **Allowed Headers:** `Content-Type`, `Accept`
+- **Credentials:** Enabled
+
+### Retraining
+
+Upload a CSV file (same format as the original WHO dataset) to `POST /retrain`. The endpoint preprocesses the data, retrains the Random Forest model, saves the updated model/scaler, and returns the new R² and RMSE scores.
+
+---
+
 ## How to Run
 
+### Notebook
 1. Clone the repository
 2. Install dependencies:
    ```bash
@@ -45,3 +87,14 @@ linear_regression_model/
    ```
 3. Open `summative/linear_regression/multivariate.ipynb`
 4. Run all cells
+
+### API (locally)
+1. Install API dependencies:
+   ```bash
+   pip install -r summative/API/requirements.txt
+   ```
+2. Start the server:
+   ```bash
+   uvicorn summative.API.prediction:app --reload
+   ```
+3. Open http://localhost:8000/docs for the Swagger UI
