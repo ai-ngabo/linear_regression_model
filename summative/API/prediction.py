@@ -57,10 +57,18 @@ class PredictionInput(BaseModel):
 
 
 # CORS middleware
-# Allowing any browser to run the API
+# Specifying allowed origins: Flutter local dev, Android emulator, and the deployed API itself
+origins = [
+    "http://localhost",            #default
+    "http://localhost:8080",        # server for flutter web dev
+    "http://10.0.2.2",             # to be used by android emulator
+    "https://linear-regression-model-d6zo.onrender.com", # deployed API server
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -94,7 +102,7 @@ def predict(data: PredictionInput):
     # Scale using the same scaler fitted during training
     input_scaled = scaler.transform(input_data)
 
-    # Predict and clamp to realistic life expectancy range
+    # Predict and bind to real life expectancy range
     prediction = model.predict(input_scaled)[0]
     prediction = float(np.clip(prediction, 30, 100))
 
