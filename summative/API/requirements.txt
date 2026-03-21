@@ -1,0 +1,6 @@
+fastapi # this framework builds APIs
+uvicorn # server to run FastAPI app
+scikit-learn # will be used to load saved model & scaler
+pandas # handles dataframes
+numpy # numeric operations
+python-multipart # file upload endpoint
