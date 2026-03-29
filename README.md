@@ -16,6 +16,11 @@ linear_regression_model/
 │   ├── API/
 │   │   ├── prediction.py             # FastAPI app (predict & retrain endpoints)
 │   │   └── requirements.txt          # API dependencies
+│   ├── FlutterApp/
+│   │   └── life_expectancy_app/      # Flutter mobile app
+│   │       ├── lib/
+│   │       │   └── main.dart         # Single-screen app with form + result card
+│   │       └── pubspec.yaml          # Flutter dependencies
 │   └── linear_regression/
 │       ├── multivariate.ipynb        # notebook
 │       ├── Life Expectancy Data.csv  # the raw dataset
@@ -74,6 +79,54 @@ CORS middleware is configured with explicit (non-wildcard) values:
 ### Retraining
 
 Upload a CSV file (same format as the original WHO dataset) to `POST /retrain`. The endpoint preprocesses the data, retrains the Random Forest model, saves the updated model/scaler, and returns the new R² and RMSE scores.
+
+---
+
+## Flutter App
+
+A mobile frontend for the prediction API, built with Flutter.
+
+**Location:** `summative/FlutterApp/life_expectancy_app/`
+
+### Features
+
+- Categorized input form with 18 fields grouped into four sections: **Healthcare**, **Lifestyle**, **Economic**, and **Demographic**
+- Country name input and Developing/Developed status selector
+- Input validation with per-field range constraints
+- Animated result card displaying the predicted life expectancy
+- Loading state on the predict button and error messaging for network/validation failures
+
+### Screenshots
+
+| | | | |
+|---|---|---|---|
+| ![](screenshots/screenshot1.png) | ![](screenshots/screenshot2.png) | ![](screenshots/screenshot3.png) | ![](screenshots/screenshot4.png) |
+
+### Key Dependencies
+
+| Package | Purpose |
+|---------|---------|
+| `http ^1.2.0` | API calls to the FastAPI backend |
+| `google_fonts ^8.0.2` | Poppins typography |
+| `cupertino_icons ^1.0.8` | iOS-style icons |
+
+### How to Run
+
+1. Install [Flutter](https://flutter.dev/docs/get-started/install)
+2. Navigate to the app directory:
+   ```bash
+   cd summative/FlutterApp/life_expectancy_app
+   ```
+3. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+4. Run on an emulator or connected device:
+   ```bash
+   flutter run
+   ```
+
+The app targets the deployed API at `https://linear-regression-model-d6zo.onrender.com` by default.
 
 ---
 
